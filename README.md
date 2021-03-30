@@ -1,5 +1,5 @@
 # mathematical_expressions_calculator_mongoDb
-A simple mathematical expression calculator. It takes simple expressions and solves them with respect to the priority of operations. This project is an add-on for one of my previous projects(https://github.com/geoGitAm/mathematical_expressions_calculator).
+A simple mathematical expression calculator. It takes simple expressions and solves them with respect to the priority of operations. This project is an add-on for one of my previous projects (https://github.com/geoGitAm/mathematical_expressions_calculator).
 
 This application has the following architecture:
 
