@@ -21,7 +21,7 @@ namespace MathematicalExpressionsCalculator.Library.Observers
         public Stack<string> Stack { get; set; } = new Stack<string>();
         public double A { get; set; } = 0;
         public double B { get; set; } = 0;
-        public string Result { get; private set; } = "Error in expression!";
+        public string Result { get; set; } = "Error in expression!";
         public ExpressionSubjectState State { get; private set; } = ExpressionSubjectState.Default;
 
         public ExpressionSubject(string input)

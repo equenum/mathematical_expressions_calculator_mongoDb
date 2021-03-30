@@ -13,22 +13,20 @@ namespace MathematicalExpressionsCalculator.UI
     public class Application : IApplication
     {
         private readonly IFileValidator _fileValidator;
-        private readonly IFileRepository _fileRepository;
         private readonly IExpressionValidator _expressionValidator;
-        private readonly IConsoleRepository _consoleRepository;
         private readonly IConsoleMessenger _consoleMessenger;
         private readonly IInputCatcher _userInputCatcher;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public Application(IFileValidator fileValidator, IFileRepository fileRepository,
-            IExpressionValidator expressionValidator, IConsoleRepository consoleRepository,
-            IConsoleMessenger consoleMessenger, IInputCatcher userInputCatcher)
+        public Application(IFileValidator fileValidator, IExpressionValidator expressionValidator,
+                           IConsoleMessenger consoleMessenger, IInputCatcher userInputCatcher, 
+                           IUnitOfWork unitOfWork)
         {
             _fileValidator = fileValidator;
-            _fileRepository = fileRepository;
             _expressionValidator = expressionValidator;
-            _consoleRepository = consoleRepository;
             _consoleMessenger = consoleMessenger;
             _userInputCatcher = userInputCatcher;
+            _unitOfWork = unitOfWork;
         }
 
         public void Run()
@@ -45,9 +43,9 @@ namespace MathematicalExpressionsCalculator.UI
                 if (_fileValidator.Validate())
                 {
                     Log.Information("User input is determined as a file path.");
-                    _fileRepository.SetInputFilePath(userInput);
-                    
-                    List<IExpressionSubject> fileExpressions = _fileRepository.Get();
+                    _unitOfWork.FileRepository.SetInputFilePath(userInput);
+
+                    List<IExpressionSubject> fileExpressions = _unitOfWork.FileRepository.Get();
                     Log.Information("Input file was loaded.");
 
                     foreach (IExpressionSubject expression in fileExpressions)
@@ -57,26 +55,30 @@ namespace MathematicalExpressionsCalculator.UI
                         if (_expressionValidator.Validate())
                         {
                             expression.Calculate();
+                            _unitOfWork.DatabaseRepository.AddExpressionToStore(expression);
                         }
                     }
 
-                    _fileRepository.Add();
-                    Log.Information("Result was written to an output file.");
+                    _unitOfWork.FileRepository.Add();
+                    _unitOfWork.DatabaseRepository.Add();
+                    Log.Information("The result was written to output the file and database.");
                 }
                 else
                 {
-                    Log.Information("User input was determined as an mathematical expression.");
-                    _consoleRepository.AddExpressionToStore(userInput);
+                    Log.Information("User input was determined as a mathematical expression.");
+                    _unitOfWork.ConsoleRepository.AddExpressionToStore(userInput);
 
-                    List<IExpressionSubject> consoleExpressions = _consoleRepository.Get();
+                    List<IExpressionSubject> consoleExpressions = _unitOfWork.ConsoleRepository.Get();
                     Log.Information("Input expression was loaded.");
 
                     foreach (IExpressionSubject expression in consoleExpressions)
                     {
                         expression.Calculate();
+                        _unitOfWork.DatabaseRepository.AddExpressionToStore(expression);
                     }
 
-                    _consoleRepository.Add();
+                    _unitOfWork.ConsoleRepository.Add();
+                    _unitOfWork.DatabaseRepository.Add();
                     Log.Information("Result was written to console.");
                 }
             }

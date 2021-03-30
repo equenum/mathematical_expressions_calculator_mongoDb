@@ -36,7 +36,7 @@ namespace MathematicalExpressionsCalculator.Library
 
         public void FileRepoResultMessage(string outputFilePath)
         {
-            Console.WriteLine($"Result has been written to output file ({outputFilePath}).");
+            Console.WriteLine($"Result has been written to the output file ({outputFilePath}) and database.");
         }
 
         public void DivisionByZeroMessage()

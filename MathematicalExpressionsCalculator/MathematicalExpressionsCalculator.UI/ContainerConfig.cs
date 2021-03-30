@@ -20,9 +20,11 @@ namespace MathematicalExpressionsCalculator.UI
 
             builder.RegisterType<FileValidator>().As<IFileValidator>();
             builder.RegisterType<FileRepository>().As<IFileRepository>();
+            builder.RegisterType<DatabaseRepository>().As<IDatabaseRepository>();
             builder.RegisterType<ExpressionValidator>().As<IExpressionValidator>();
             builder.RegisterType<ConsoleRepository>().As<IConsoleRepository>();
             builder.RegisterType<ConsoleInputCatcher>().As<IInputCatcher>();
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
 
             return builder.Build();
         }
