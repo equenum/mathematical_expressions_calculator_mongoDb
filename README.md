@@ -5,7 +5,7 @@ This application has the following architecture:
 
 - Presentation layer: Console Application (C#, .NET Core);
 - Business layer: Class Library (C#, .NET Core);
-- Data layer 1: Txt-file;
+- Data layer 1: txt-file;
 - Data layer 2: MongoDb database.
 
 
